@@ -1,8 +1,17 @@
 package com.curso_modulos_spring.best_travel.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
 @Entity(name = "hotel")
 public class HotelEntity
