@@ -51,4 +51,20 @@ public class CustomerEntity
             orphanRemoval = true
     )
     private Set<TourEntity> tours;
+
+    @OneToMany(
+            mappedBy = "customer",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<TicketEntity> tickets;
+
+    @OneToMany(
+            mappedBy = "customer",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<ReservationEntity> reservations;
 }

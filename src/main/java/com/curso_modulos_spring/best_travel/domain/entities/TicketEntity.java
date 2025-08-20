@@ -34,4 +34,8 @@ public class TicketEntity
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tour_id")
     private TourEntity tour;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 }
