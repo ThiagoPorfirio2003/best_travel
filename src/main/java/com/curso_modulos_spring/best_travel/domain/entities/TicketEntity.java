@@ -1,32 +1,30 @@
 package com.curso_modulos_spring.best_travel.domain.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 
-@Entity(name = "hotel")
-public class HotelEntity
+@Entity(name = "ticket")
+public class TicketEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
-    @Column(length = 50)
-    private String name;
-    @Column(length = 50)
-    private String address;
-
-    private Integer rating;
+    private UUID id;
 
     private BigDecimal price;
 
+    private LocalDate departureDate;
+    private LocalDate arrivalDate;
+    private LocalDate purchaseDate;
 }
