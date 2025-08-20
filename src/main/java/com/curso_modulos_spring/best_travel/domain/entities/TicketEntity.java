@@ -1,7 +1,6 @@
 package com.curso_modulos_spring.best_travel.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +26,8 @@ public class TicketEntity
     private LocalDate departureDate;
     private LocalDate arrivalDate;
     private LocalDate purchaseDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fly_id")
+    private FlyEntity fly;
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -38,4 +39,12 @@ public class FlyEntity
 
     @Enumerated(EnumType.STRING)
     private AeroLine aeroLine;
+
+    @OneToMany(
+            mappedBy = "fly",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
+    )
+    private Set<TicketEntity> tickets;
 }
