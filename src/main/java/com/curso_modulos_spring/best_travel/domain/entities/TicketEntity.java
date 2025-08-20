@@ -30,4 +30,8 @@ public class TicketEntity
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fly_id")
     private FlyEntity fly;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tour_id")
+    private TourEntity tour;
 }

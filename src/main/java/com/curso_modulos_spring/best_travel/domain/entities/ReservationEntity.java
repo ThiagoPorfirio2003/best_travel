@@ -33,4 +33,9 @@ public class ReservationEntity
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;
+
+    //Puede o no tenerlo
+    @ManyToOne
+    @JoinColumn(name = "tour_id", nullable = true)
+    private TourEntity tour;
 }
