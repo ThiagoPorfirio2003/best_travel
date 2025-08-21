@@ -1,5 +1,8 @@
 package com.curso_modulos_spring.best_travel;
 
+import com.curso_modulos_spring.best_travel.domain.entities.ReservationEntity;
+import com.curso_modulos_spring.best_travel.domain.entities.TicketEntity;
+import com.curso_modulos_spring.best_travel.domain.entities.TourEntity;
 import com.curso_modulos_spring.best_travel.domain.repositories.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -71,7 +76,46 @@ public class BestTravelApplication implements CommandLineRunner {
 
 		//this.hotelRepository.findByRatingGreaterThan(3).forEach(System.out::println);
 
-		System.out.println(this.hotelRepository.findByReservationsId(UUID.fromString("12345678-1234-5678-1234-567812345678")));
+		//System.out.println(this.hotelRepository.findByReservationsId(UUID.fromString("12345678-1234-5678-1234-567812345678")));
 
+
+
+		var customer = this.customerRepository.findById("GOTW771012HMRGR087").get();
+		var hotel = this.hotelRepository.findById(3L).get();
+		var fly = flyRepository.findById(11L).get();
+
+		var tour = TourEntity.builder()
+				.customer(customer)
+				.build();
+
+		var ticket = TicketEntity.builder()
+				.id(UUID.randomUUID())
+				.price(fly.getPrice().multiply(BigDecimal.TEN))
+				.arrivalDate(LocalDate.now())
+				.departureDate(LocalDate.now())
+				.purchaseDate(LocalDate.now())
+				.customer(customer)
+				.tour(tour)
+				.fly(fly)
+				.build();
+
+		var reservation = ReservationEntity.builder()
+				.id(UUID.randomUUID())
+				.customer(customer)
+				.dateTimeReservation(LocalDateTime.now())
+				.dateEnd(LocalDate.now().plusDays(2))
+				.dateStart(LocalDate.now().plusDays(1))
+				.hotel(hotel)
+				.tour(tour)
+				.totalDays(1)
+				.price(hotel.getPrice().multiply(BigDecimal.TEN))
+				.build();
+
+		tour.addReserervation(reservation);
+		tour.addTicket(ticket);
+		tour.updateReservations();
+		tour.updateTickets();
+
+		this.tourRepository.save(tour);
 	}
 }
