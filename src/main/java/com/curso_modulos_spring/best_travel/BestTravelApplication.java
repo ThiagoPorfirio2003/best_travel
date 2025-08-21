@@ -69,6 +69,9 @@ public class BestTravelApplication implements CommandLineRunner {
 		//this.hotelRepository.findByPriceLessThan(BigDecimal.valueOf(100)).forEach(System.out::println);
 		//this.hotelRepository.findByPriceBetween(BigDecimal.valueOf(100), BigDecimal.valueOf(150)).forEach(System.out::println);
 
-		this.hotelRepository.findByRatingGreaterThan(3).forEach(System.out::println);
+		//this.hotelRepository.findByRatingGreaterThan(3).forEach(System.out::println);
+
+		System.out.println(this.hotelRepository.findByReservationsId(UUID.fromString("12345678-1234-5678-1234-567812345678")));
+
 	}
 }

@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public interface HotelRepository extends JpaRepository<HotelEntity, Long>
 {
@@ -15,4 +17,6 @@ public interface HotelRepository extends JpaRepository<HotelEntity, Long>
     Set<HotelEntity> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
     Set<HotelEntity> findByRatingGreaterThan(Integer rating);
+
+    Optional<HotelEntity> findByReservationsId(UUID id);
 }
