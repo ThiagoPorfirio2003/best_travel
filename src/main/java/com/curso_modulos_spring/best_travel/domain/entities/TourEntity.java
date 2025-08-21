@@ -17,8 +17,8 @@ import java.util.Set;
 public class TourEntity
 {
     @Id
-    @Column(length = 20)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_customer")

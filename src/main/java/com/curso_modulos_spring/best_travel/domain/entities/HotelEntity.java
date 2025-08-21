@@ -1,10 +1,7 @@
 package com.curso_modulos_spring.best_travel.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -30,6 +27,8 @@ public class HotelEntity
 
     private BigDecimal price;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "hotel",
             fetch = FetchType.EAGER,

@@ -2,10 +2,7 @@ package com.curso_modulos_spring.best_travel.domain.entities;
 
 import com.curso_modulos_spring.best_travel.util.AeroLine;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -40,6 +37,8 @@ public class FlyEntity
     @Enumerated(EnumType.STRING)
     private AeroLine aeroLine;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "fly",
             cascade = CascadeType.ALL,

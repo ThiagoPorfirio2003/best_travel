@@ -1,10 +1,7 @@
 package com.curso_modulos_spring.best_travel.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -44,6 +41,8 @@ public class CustomerEntity
     @Column(length = 20)
     private String phoneNumber;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "customer",
             fetch = FetchType.EAGER,
@@ -52,6 +51,8 @@ public class CustomerEntity
     )
     private Set<TourEntity> tours;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "customer",
             fetch = FetchType.EAGER,
@@ -60,6 +61,8 @@ public class CustomerEntity
     )
     private Set<TicketEntity> tickets;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "customer",
             fetch = FetchType.EAGER,
