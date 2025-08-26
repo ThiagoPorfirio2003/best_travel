@@ -5,10 +5,9 @@ import com.curso_modulos_spring.best_travel.api.models.responses.TicketResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/ticket")
@@ -26,5 +25,11 @@ public class TicketController
     ResponseEntity<TicketResponse> post(@RequestBody TicketRequest request)
     {
         return ResponseEntity.ok(ticketService.create(request));
+    }
+
+    @GetMapping(path = "/{uuid}")
+    ResponseEntity<TicketResponse> get(@PathVariable(name = "uuid") UUID id)
+    {
+        return ResponseEntity.ok(this.ticketService.read(id));
     }
 }

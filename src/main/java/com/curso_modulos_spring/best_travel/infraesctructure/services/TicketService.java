@@ -48,9 +48,10 @@ public class TicketService implements ITicketService
                 .id(UUID.randomUUID())
                 .fly(fly)
                 .customer(customer)
-                .price(fly.getPrice().multiply(BigDecimal.valueOf(0,25)))
+                .price(fly.getPrice().multiply(BigDecimal.valueOf(0.25)))
                 .purchaseDate(LocalDateTime.now())
                 .departureDate(LocalDateTime.now())
+                .arrivalDate(LocalDateTime.now().plusDays(1L))
                 .build();
 
         var ticketPersisted = this.ticketRepository.save(ticketToPersist);
@@ -62,7 +63,9 @@ public class TicketService implements ITicketService
 
     @Override
     public TicketResponse read(UUID uuid) {
-        return null;
+        var ticketFromDB = this.ticketRepository.findById(uuid).orElseThrow();
+
+        return this.entityToResponse(ticketFromDB);
     }
 
     @Override
