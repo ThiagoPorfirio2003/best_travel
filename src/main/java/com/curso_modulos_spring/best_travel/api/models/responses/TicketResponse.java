@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,7 +18,7 @@ public class TicketResponse
     private UUID id;
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
-    private LocalDate purchaseDate;
+    private LocalDateTime purchaseDate;
     private BigDecimal price;
     private FlyResponse fly;
 }
