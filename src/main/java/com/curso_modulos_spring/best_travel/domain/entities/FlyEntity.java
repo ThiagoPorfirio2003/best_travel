@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -39,11 +40,12 @@ public class FlyEntity
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Builder.Default
     @OneToMany(
             mappedBy = "fly",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    private Set<TicketEntity> tickets;
+    private Set<TicketEntity> tickets = new HashSet<>();
 }
