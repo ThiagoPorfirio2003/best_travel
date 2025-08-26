@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Transactional
@@ -36,8 +38,26 @@ public class TicketService implements ITicketService
     }
 
     @Override
-    public TicketResponse create(TicketRequest request) {
-        return null;
+    public TicketResponse create(TicketRequest request)
+    {
+        //Estos 3 metodos deberian ser una simple validacion para saber si la entidad existe
+        var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow();
+        var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow();
+
+        var ticketToPersist = TicketEntity.builder()
+                .id(UUID.randomUUID())
+                .fly(fly)
+                .customer(customer)
+                .price(fly.getPrice().multiply(BigDecimal.valueOf(0,25)))
+                .purchaseDate(LocalDateTime.now())
+                .departureDate(LocalDateTime.now())
+                .build();
+
+        var ticketPersisted = this.ticketRepository.save(ticketToPersist);
+
+        log.info("Ticket saved with id {}", ticketPersisted.getId());
+
+        return this.entityToResponse(ticketPersisted);
     }
 
     @Override
