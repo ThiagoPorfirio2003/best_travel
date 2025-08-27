@@ -91,8 +91,11 @@ public class TicketService implements ITicketService
     }
 
     @Override
-    public void delete(UUID uuid) {
+    public void delete(UUID uuid)
+    {
+        var ticketToDelete = this.ticketRepository.findById(uuid).orElseThrow();
 
+        this.ticketRepository.delete(ticketToDelete);
     }
 
     private TicketResponse entityToResponse(TicketEntity ticketEntity)
