@@ -22,4 +22,14 @@ public class BestTravelUtil
 
         return LocalDateTime.now().plusHours(randomHours);
     }
+
+    public static Integer getRandomIntSoon()
+    {
+        return random.nextInt(5-2) + 2;
+    }
+
+    public static Integer getRandomIntLatter()
+    {
+        return random.nextInt(12-6) + 6;
+    }
 }

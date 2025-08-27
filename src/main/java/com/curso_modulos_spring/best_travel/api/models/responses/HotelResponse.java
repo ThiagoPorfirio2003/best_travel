@@ -15,7 +15,7 @@ public class HotelResponse
 {
     private Long id;
     private String name;
-    private String adress;
+    private String address;
     private Integer rating;
     private BigDecimal price;
 }

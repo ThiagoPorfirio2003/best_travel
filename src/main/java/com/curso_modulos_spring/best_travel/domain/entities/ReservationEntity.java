@@ -1,5 +1,6 @@
 package com.curso_modulos_spring.best_travel.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,5 +43,4 @@ public class ReservationEntity
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
-
 }
