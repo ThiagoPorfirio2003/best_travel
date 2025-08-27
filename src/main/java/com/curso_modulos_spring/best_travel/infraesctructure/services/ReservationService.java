@@ -44,10 +44,6 @@ public class ReservationService implements IReservationService
     @Override
     public ReservationResponse create(ReservationRequest request)
     {
-        /*
-            private String idClient;
-            private Long idHotel;
-       */
         var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow();
         var hotel = this.hotelRepository.findById(request.getIdHotel()).orElseThrow();
 
@@ -70,8 +66,11 @@ public class ReservationService implements IReservationService
     }
 
     @Override
-    public ReservationResponse read(UUID uuid) {
-        return null;
+    public ReservationResponse read(UUID uuid)
+    {
+        var reservationFromDB = this.reservationRepository.findById(uuid).orElseThrow();
+
+        return this.entityToResponse(reservationFromDB);
     }
 
     @Override
