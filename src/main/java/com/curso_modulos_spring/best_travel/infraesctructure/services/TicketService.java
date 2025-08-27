@@ -8,6 +8,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.CustomerReposito
 import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.TicketRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITicketService;
+import com.curso_modulos_spring.best_travel.util.BestTravelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class TicketService implements ITicketService
                 .customer(customer)
                 .price(fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice()))
                 .purchaseDate(LocalDateTime.now())
-                .departureDate(LocalDateTime.now())
-                .arrivalDate(LocalDateTime.now().plusDays(1L))
+                .departureDate(BestTravelUtil.getRandomSoon())
+                .arrivalDate(BestTravelUtil.getRandomLatter())
                 .build();
 
         var ticketPersisted = this.ticketRepository.save(ticketToPersist);
@@ -82,8 +83,8 @@ public class TicketService implements ITicketService
 
         ticketToUpdate.setFly(fly);
         ticketToUpdate.setPrice(fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice()));
-        ticketToUpdate.setArrivalDate(LocalDateTime.now());
-        ticketToUpdate.setDepartureDate(LocalDateTime.now());
+        ticketToUpdate.setArrivalDate(BestTravelUtil.getRandomLatter());
+        ticketToUpdate.setDepartureDate(BestTravelUtil.getRandomSoon());
 
         var ticketUpdated = this.ticketRepository.save(ticketToUpdate);
 
