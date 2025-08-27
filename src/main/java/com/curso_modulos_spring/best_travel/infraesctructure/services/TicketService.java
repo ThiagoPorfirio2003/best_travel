@@ -27,6 +27,8 @@ public class TicketService implements ITicketService
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
 
+    private static final BigDecimal CHAGER_PRICE_PERCENTAGE = BigDecimal.valueOf(0.25);
+
     @Autowired
     public TicketService(FlyRepository flyRepository,
                             CustomerRepository customerRepository,
@@ -48,7 +50,7 @@ public class TicketService implements ITicketService
                 .id(UUID.randomUUID())
                 .fly(fly)
                 .customer(customer)
-                .price(fly.getPrice().multiply(BigDecimal.valueOf(0.25)))
+                .price(fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice()))
                 .purchaseDate(LocalDateTime.now())
                 .departureDate(LocalDateTime.now())
                 .arrivalDate(LocalDateTime.now().plusDays(1L))
@@ -79,7 +81,7 @@ public class TicketService implements ITicketService
         var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow();
 
         ticketToUpdate.setFly(fly);
-        ticketToUpdate.setPrice(fly.getPrice().multiply(BigDecimal.valueOf(0.25)));
+        ticketToUpdate.setPrice(fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice()));
         ticketToUpdate.setArrivalDate(LocalDateTime.now());
         ticketToUpdate.setDepartureDate(LocalDateTime.now());
 
@@ -96,6 +98,13 @@ public class TicketService implements ITicketService
         var ticketToDelete = this.ticketRepository.findById(uuid).orElseThrow();
 
         this.ticketRepository.delete(ticketToDelete);
+    }
+
+    @Override
+    public BigDecimal findPrice(Long idFly) {
+        var fly = this.flyRepository.findById(idFly).orElseThrow();
+
+        return fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice());
     }
 
     private TicketResponse entityToResponse(TicketEntity ticketEntity)
