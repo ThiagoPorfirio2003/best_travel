@@ -70,17 +70,42 @@ public class ReservationService implements IReservationService
     {
         var reservationFromDB = this.reservationRepository.findById(uuid).orElseThrow();
 
+        log.info("Reservation read with id {}", uuid);
+
         return this.entityToResponse(reservationFromDB);
     }
 
     @Override
-    public ReservationResponse update(ReservationRequest request, UUID uuid) {
-        return null;
+    public ReservationResponse update(ReservationRequest request, UUID uuid)
+    {
+    /*
+        private String idClient;
+        private Long idHotel;
+     */
+        var reservationToUpdate = this.reservationRepository.findById(uuid).orElseThrow();
+        var hotelFromDB = this.hotelRepository.findById(request.getIdHotel()).orElseThrow();
+        var hotelPrice = hotelFromDB.getPrice();
+
+        reservationToUpdate.setHotel(hotelFromDB);
+        reservationToUpdate.setPrice(hotelPrice.add(hotelPrice.multiply(ReservationService.CHAGER_PRICE_PERCENTAGE)));
+        reservationToUpdate.setDateStart(BestTravelUtil.getRandomSoon().toLocalDate());
+        reservationToUpdate.setDateEnd(BestTravelUtil.getRandomLatter().toLocalDate());
+
+        this.reservationRepository.save(reservationToUpdate);
+
+        log.info("Reservation updated with id {}", uuid);
+
+        return this.entityToResponse(reservationToUpdate);
     }
 
     @Override
-    public void delete(UUID uuid) {
+    public void delete(UUID uuid)
+    {
+        var reservationToDelete = this.reservationRepository.findById(uuid).orElseThrow();
 
+        this.reservationRepository.delete(reservationToDelete);
+
+        log.info("Reservation deleted with id: {}", uuid);
     }
 
     private ReservationResponse entityToResponse(ReservationEntity reservation)

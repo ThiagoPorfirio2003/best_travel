@@ -32,4 +32,18 @@ public class ReservationController
     {
         return ResponseEntity.ok(this.reservationService.read(id));
     }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<ReservationResponse> update(@PathVariable(name = "id") UUID idReservation, @RequestBody ReservationRequest request)
+    {
+        return ResponseEntity.ok(this.reservationService.update(request, idReservation));
+    }
+
+    @DeleteMapping(path = "/{reservationId}")
+    public ResponseEntity<ReservationResponse> delete(@PathVariable UUID reservationId)
+    {
+        this.reservationService.delete(reservationId);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -68,6 +68,8 @@ public class TicketService implements ITicketService
     public TicketResponse read(UUID uuid) {
         var ticketFromDB = this.ticketRepository.findById(uuid).orElseThrow();
 
+        log.info("Ticket read with id {}", ticketFromDB.getId());
+
         return this.entityToResponse(ticketFromDB);
     }
 
@@ -99,6 +101,8 @@ public class TicketService implements ITicketService
         var ticketToDelete = this.ticketRepository.findById(uuid).orElseThrow();
 
         this.ticketRepository.delete(ticketToDelete);
+
+        log.info("Ticket deleted with id {}", uuid);
     }
 
     @Override
