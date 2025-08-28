@@ -5,6 +5,7 @@ import com.curso_modulos_spring.best_travel.api.models.responses.HotelResponse;
 import com.curso_modulos_spring.best_travel.api.models.responses.ReservationResponse;
 import com.curso_modulos_spring.best_travel.domain.entities.ReservationEntity;
 import com.curso_modulos_spring.best_travel.domain.repositories.CustomerRepository;
+import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.HotelRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.ReservationRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IReservationService;
@@ -28,7 +29,7 @@ public class ReservationService implements IReservationService
     private final CustomerRepository customerRepository;
     private final HotelRepository hotelRepository;
 
-    private static final BigDecimal CHAGER_PRICE_PERCENTAGE = BigDecimal.valueOf(0.25);
+    private static final BigDecimal CHARGES_PRICE_PERCENTAGE = BigDecimal.valueOf(0.20);
 
 
     @Autowired
@@ -46,14 +47,15 @@ public class ReservationService implements IReservationService
     {
         var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow();
         var hotel = this.hotelRepository.findById(request.getIdHotel()).orElseThrow();
+        var dateStart = BestTravelUtil.getRandomSoon().toLocalDate();
 
         var reservationToSave = ReservationEntity.builder()
                 .id(UUID.randomUUID())
                 .dateTimeReservation(LocalDateTime.now())
-                .dateStart(BestTravelUtil.getRandomSoon().toLocalDate())
-                .dateEnd(BestTravelUtil.getRandomLatter().toLocalDate())
-                .totalDays(BestTravelUtil.getRandomIntSoon())
-                .price(hotel.getPrice().multiply(ReservationService.CHAGER_PRICE_PERCENTAGE).add(hotel.getPrice()))
+                .dateStart(dateStart)
+                .dateEnd(dateStart.plusDays(request.getTotalDays()))
+                .totalDays(request.getTotalDays())
+                .price(hotel.getPrice().multiply(ReservationService.CHARGES_PRICE_PERCENTAGE).add(hotel.getPrice()))
                 .hotel(hotel)
                 .customer(customer)
                 .build();
@@ -85,11 +87,14 @@ public class ReservationService implements IReservationService
         var reservationToUpdate = this.reservationRepository.findById(uuid).orElseThrow();
         var hotelFromDB = this.hotelRepository.findById(request.getIdHotel()).orElseThrow();
         var hotelPrice = hotelFromDB.getPrice();
+        var dateStart = BestTravelUtil.getRandomSoon();
 
         reservationToUpdate.setHotel(hotelFromDB);
-        reservationToUpdate.setPrice(hotelPrice.add(hotelPrice.multiply(ReservationService.CHAGER_PRICE_PERCENTAGE)));
-        reservationToUpdate.setDateStart(BestTravelUtil.getRandomSoon().toLocalDate());
-        reservationToUpdate.setDateEnd(BestTravelUtil.getRandomLatter().toLocalDate());
+        reservationToUpdate.setPrice(hotelPrice.add(hotelPrice.multiply(ReservationService.CHARGES_PRICE_PERCENTAGE)));
+        reservationToUpdate.setDateStart(dateStart.toLocalDate());
+        reservationToUpdate.setDateEnd(dateStart.toLocalDate().plusDays(request.getTotalDays()));
+        reservationToUpdate.setTotalDays(request.getTotalDays());
+
 
         this.reservationRepository.save(reservationToUpdate);
 
@@ -119,5 +124,12 @@ public class ReservationService implements IReservationService
         response.setHotelResponse(hotelResponse);
 
         return response;
+    }
+
+    @Override
+    public BigDecimal findPrice(Long flyId) {
+        var hotelFromDb = this.hotelRepository.findById(flyId).orElseThrow();
+
+        return  hotelFromDb.getPrice().add(hotelFromDb.getPrice().multiply(ReservationService.CHARGES_PRICE_PERCENTAGE));
     }
 }

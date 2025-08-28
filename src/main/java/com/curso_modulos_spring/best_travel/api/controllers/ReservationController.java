@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +34,12 @@ public class ReservationController
     public ResponseEntity<ReservationResponse> read(@PathVariable UUID id)
     {
         return ResponseEntity.ok(this.reservationService.read(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Map<String, BigDecimal>> findHotelPrice(@RequestParam Long hotelId)
+    {
+        return ResponseEntity.ok(Collections.singletonMap("hotelPrice", this.reservationService.findPrice(hotelId)));
     }
 
     @PutMapping(path = "/{id}")

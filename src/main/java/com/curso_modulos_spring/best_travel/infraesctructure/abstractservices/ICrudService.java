@@ -2,7 +2,7 @@ package com.curso_modulos_spring.best_travel.infraesctructure.abstractservices;
 
 /*
     Interfaz genererica para todos los servicios que ofrezcan metodo crud
-    RP: Request
+    RQ: Request
     RP: Response
 */
 public interface ICrudService<RQ, RP, ID>

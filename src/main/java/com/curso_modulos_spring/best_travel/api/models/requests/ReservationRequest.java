@@ -13,4 +13,5 @@ public class ReservationRequest
 {
     private String idClient;
     private Long idHotel;
+    private Integer totalDays;
 }
