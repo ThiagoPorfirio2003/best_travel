@@ -1,12 +1,16 @@
 package com.curso_modulos_spring.best_travel.infraesctructure.services;
 
 import com.curso_modulos_spring.best_travel.api.models.responses.FlyResponse;
+import com.curso_modulos_spring.best_travel.domain.entities.FlyEntity;
 import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IFlyService;
 import com.curso_modulos_spring.best_travel.util.SortType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +45,18 @@ public class FlyService implements IFlyService
     }
 
     @Override
-    public Page<FlyResponse> readAll(Integer pageNumber, Integer pageSize, SortType sortType) {
-        return null;
+    public Page<FlyResponse> readAll(Integer pageNumber, Integer pageSize, SortType sortType)
+    {
+        PageRequest pageRequest = null;
+
+        switch (sortType)
+        {
+            case NONE ->  pageRequest = PageRequest.of(pageNumber, pageSize);
+            case LOWER -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(FIELD_BY_SORT).ascending());
+            case UPPER -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(FIELD_BY_SORT).descending());
+        };
+
+        return this.flyRepository.findAll(pageRequest).map(this::entityToResponse);
     }
 
     @Override
@@ -54,4 +68,15 @@ public class FlyService implements IFlyService
     public Set<FlyResponse> readBetweenPrice(BigDecimal min, BigDecimal max) {
         return Set.of();
     }
+
+    private FlyResponse entityToResponse(FlyEntity flyEntity)
+    {
+        var flyResponse = new FlyResponse();
+
+        BeanUtils.copyProperties(flyEntity, flyResponse);
+
+        return flyResponse;
+    }
+
+    //private Set<FlyResponse>
 }
