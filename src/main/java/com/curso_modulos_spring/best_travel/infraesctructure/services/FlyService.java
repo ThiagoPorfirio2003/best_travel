@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -35,13 +36,9 @@ public class FlyService implements IFlyService
     @Override
     public Set<FlyResponse> readByOriginDestiny(String origin, String destiny)
     {
-        /*
-        var fliesFromDB = this.flyRepository.selectOriginDestiny(origin, destiny);
-        var fliesResponses = new HashSet<FlyResponse>();
-
-        return flies;
-        */
-        return null;
+        return this.flyRepository.selectOriginDestiny(origin,destiny).stream()
+                .map(this::entityToResponse)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -61,12 +58,16 @@ public class FlyService implements IFlyService
 
     @Override
     public Set<FlyResponse> readLessPrice(BigDecimal price) {
-        return Set.of();
+        return this.flyRepository.selectLessPrice(price).stream()
+                .map(this::entityToResponse)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<FlyResponse> readBetweenPrice(BigDecimal min, BigDecimal max) {
-        return Set.of();
+        return this.flyRepository.selectBetweenPrice(min,max).stream()
+                .map(this::entityToResponse)
+                .collect(Collectors.toSet());
     }
 
     private FlyResponse entityToResponse(FlyEntity flyEntity)
