@@ -50,9 +50,9 @@ public class HotelController
         return ResponseEntity.ok(this.hotelService.readBetweenPrice(min, max));
     }
 
-    @GetMapping(path = "/greater_than")
-    public ResponseEntity<Set<HotelResponse>> getGreaterThan(@RequestParam Integer rating)
+    @GetMapping(path = "/rating")
+    public ResponseEntity<Set<HotelResponse>> getByRating(@RequestParam Integer rating)
     {
-        return ResponseEntity.ok(this.hotelService.readGreaterThan(rating));
+        return ResponseEntity.ok(this.hotelService.readByReating(rating));
     }
 }

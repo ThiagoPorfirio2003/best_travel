@@ -6,5 +6,5 @@ import java.util.Set;
 
 public interface IHotelService extends ICatalogService<HotelResponse>
 {
-    Set<HotelResponse> readGreaterThan(Integer rating);
+    Set<HotelResponse> readByReating(Integer rating);
 }
