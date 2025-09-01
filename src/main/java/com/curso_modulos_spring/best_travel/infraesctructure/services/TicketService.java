@@ -28,7 +28,7 @@ public class TicketService implements ITicketService
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
 
-    private static final BigDecimal CHAGER_PRICE_PERCENTAGE = BigDecimal.valueOf(0.25);
+    public static final BigDecimal CHAGER_PRICE_PERCENTAGE = BigDecimal.valueOf(0.25);
 
     @Autowired
     public TicketService(FlyRepository flyRepository,
