@@ -26,13 +26,13 @@ public class TourController
     }
 
     @GetMapping(path = "/{tourId}")
-    public ResponseEntity<TourResponse> read(@RequestParam Long tourId)
+    public ResponseEntity<TourResponse> read(@PathVariable Long tourId)
     {
         return ResponseEntity.ok(this.tourService.read(tourId));
     }
 
     @DeleteMapping(path = "/{tourId}")
-    public ResponseEntity<TourResponse> delete(@RequestParam Long tourId)
+    public ResponseEntity<TourResponse> delete(@PathVariable Long tourId)
     {
         this.tourService.delete(tourId);
 

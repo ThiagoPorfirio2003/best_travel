@@ -55,6 +55,6 @@ public class HotelController
     {
         if(rating > 4) rating = 4;
         if(rating < 1) rating = 1;
-        return ResponseEntity.ok(this.hotelService.readByReating(rating));
+        return ResponseEntity.ok(this.hotelService.readByRating(rating));
     }
 }
