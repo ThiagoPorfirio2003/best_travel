@@ -45,7 +45,7 @@ public class TourService implements ITourService
     }
 
     @Override
-    public void removeTicket(UUID ticketId, Long tourId)
+    public void removeTicket(Long tourId, UUID ticketId)
     {
         var tourFromDB = this.tourRepository.findById(tourId).orElseThrow();
 
@@ -55,7 +55,7 @@ public class TourService implements ITourService
     }
 
     @Override
-    public UUID addTicket(Long flyId, Long tourId)
+    public UUID addTicket(Long tourId, Long flyId)
     {
         var tourFromDB = this.tourRepository.findById(tourId).orElseThrow();
         var fly = this.flyRepository.findById(flyId).orElseThrow();
@@ -69,12 +69,12 @@ public class TourService implements ITourService
     }
 
     @Override
-    public void removeReservation(UUID reservationId, Long tourId) {
+    public void removeReservation(Long tourId, UUID reservationId) {
 
     }
 
     @Override
-    public UUID addReservation(UUID reservationId, Long tourId) {
+    public UUID addReservation(Long tourId, UUID reservationId) {
         return null;
     }
 
