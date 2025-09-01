@@ -53,6 +53,11 @@ public class TourEntity
         this.tickets.forEach(ticket -> ticket.setTour(this));
     }
 
+    public void addTicket(TicketEntity ticket)
+    {
+        this.tickets.add(ticket);
+    }
+
     public void removeTicket(UUID id)
     {
         this.tickets.removeIf(ticket -> ticket.getId().toString().equals(id.toString()));
@@ -62,9 +67,28 @@ public class TourEntity
         Cuando agrego un ticket al tour, vinculo al tour con el ticket pero no al revez.
         Con este metodo le asigno este tour a cada ticket que fue asignado a este tour
     */
+    public void updateTickets()
+    {
+        this.tickets.forEach(ticket -> ticket.setTour(this));
+    }
+
+    public void addReserervation(ReservationEntity reservation)
+    {
+        this.reservations.add(reservation);
+    }
 
     public void removeReservation(UUID id)
     {
         this.reservations.removeIf(reservation -> reservation.getId().toString().equals(id.toString()));
     }
+
+    public void updateReservations()
+    {
+        this.reservations.forEach(reservation -> reservation.setTour(this));
+    }
+
+    /*
+        Un tour puede tickets y reservaciones, pero no
+        necesariamente ambos
+    */
 }

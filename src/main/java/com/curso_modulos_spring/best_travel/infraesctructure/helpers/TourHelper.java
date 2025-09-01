@@ -86,4 +86,19 @@ public class TourHelper
 
         return response;
     }
+
+    public TicketEntity createTicket(FlyEntity fly, CustomerEntity customer)
+    {
+        var ticketToPersist = TicketEntity.builder()
+                .id(UUID.randomUUID())
+                .fly(fly)
+                .customer(customer)
+                .price(fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice()))
+                .purchaseDate(LocalDateTime.now())
+                .departureDate(BestTravelUtil.getRandomSoon())
+                .arrivalDate(BestTravelUtil.getRandomLatter())
+                .build();
+
+        return this.ticketRepository.save(ticketToPersist);
+    }
 }
