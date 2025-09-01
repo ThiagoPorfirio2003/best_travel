@@ -98,24 +98,23 @@ public class TourService implements ITourService
     {
         var tour = this.tourRepository.findById(tourId).orElseThrow();
 
-        //tour.getTickets().m
-
-        return null;
+        return this.entityToResponse(tour);
     }
 
     @Override
-    public void delete(Long tourId) {
+    public void delete(Long tourId)
+    {
+        /*
+            this.tourRepository.deleteById(tourId);
+            La siguiente forma es como lo escribio el profe
+         */
 
+        var tourToDelete = this.tourRepository.findById(tourId).orElseThrow();
+        this.tourRepository.delete(tourToDelete);
     }
 
     private TourResponse entityToResponse(TourEntity tourEntity)
     {
-        /*
-            private Long id;
-    private Set<UUID> ticketIds;
-    private Set<UUID> reservationIds;
-         */
-
         return TourResponse.builder()
                 .id(tourEntity.getId())
                 .reservationIds(tourEntity.getReservations().stream().map(ReservationEntity::getId).collect(Collectors.toSet()))
