@@ -47,6 +47,7 @@ public class TourEntity
     private Set<ReservationEntity> reservations = new HashSet<>();
 
     @PrePersist
+    @PreUpdate
     public void updateFK()
     {
         this.reservations.forEach(reservation -> reservation.setTour(this));
@@ -56,6 +57,7 @@ public class TourEntity
     public void addTicket(TicketEntity ticket)
     {
         this.tickets.add(ticket);
+        ticket.setTour(this);
     }
 
     public void removeTicket(UUID id)
@@ -75,6 +77,7 @@ public class TourEntity
     public void addReserervation(ReservationEntity reservation)
     {
         this.reservations.add(reservation);
+        reservation.setTour(this);
     }
 
     public void removeReservation(UUID id)

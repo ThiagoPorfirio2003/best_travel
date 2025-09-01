@@ -12,5 +12,5 @@ public interface ITourService extends ISimpleCrudService<TourRequest, TourRespon
     UUID addTicket(Long tourId, Long flyId);
 
     void removeReservation(Long tourId, UUID reservationId);
-    UUID addReservation(Long tourId, UUID reservationId);
+    UUID addReservation(Long tourId, Long hotelId, Integer totalDays);
 }

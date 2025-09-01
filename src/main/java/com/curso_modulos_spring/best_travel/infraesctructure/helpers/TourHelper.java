@@ -101,4 +101,22 @@ public class TourHelper
 
         return this.ticketRepository.save(ticketToPersist);
     }
+
+    public ReservationEntity createReservation(HotelEntity hotel, CustomerEntity customer, Integer totalDays)
+    {
+        var dateStart = BestTravelUtil.getRandomSoon().toLocalDate();
+
+        var reservationToSave = ReservationEntity.builder()
+                .id(UUID.randomUUID())
+                .dateTimeReservation(LocalDateTime.now())
+                .dateStart(dateStart)
+                .dateEnd(dateStart.plusDays(totalDays))
+                .totalDays(totalDays)
+                .price(hotel.getPrice().multiply(ReservationService.CHARGES_PRICE_PERCENTAGE).add(hotel.getPrice()))
+                .hotel(hotel)
+                .customer(customer)
+                .build();
+
+        return this.reservationRepository.save(reservationToSave);
+    }
 }
