@@ -8,6 +8,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.CustomerReposito
 import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.TicketRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITicketService;
+import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.util.BestTravelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -27,17 +28,20 @@ public class TicketService implements ITicketService
     private final FlyRepository flyRepository;
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
+    private final CustomerHelper customerHelper;
 
     public static final BigDecimal CHAGER_PRICE_PERCENTAGE = BigDecimal.valueOf(0.25);
 
     @Autowired
     public TicketService(FlyRepository flyRepository,
-                            CustomerRepository customerRepository,
-                            TicketRepository ticketRepository)
+                         CustomerRepository customerRepository,
+                         TicketRepository ticketRepository,
+                         CustomerHelper customerHelper)
     {
         this.flyRepository = flyRepository;
         this.customerRepository = customerRepository;
         this.ticketRepository = ticketRepository;
+        this.customerHelper = customerHelper;
     }
 
     @Override
@@ -58,6 +62,8 @@ public class TicketService implements ITicketService
                 .build();
 
         var ticketPersisted = this.ticketRepository.save(ticketToPersist);
+
+        this.customerHelper.increase(customer.getDni(), TicketService.class);
 
         log.info("Ticket saved with id {}", ticketPersisted.getId());
 

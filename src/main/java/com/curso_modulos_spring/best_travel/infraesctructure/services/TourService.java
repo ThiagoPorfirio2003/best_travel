@@ -8,6 +8,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.HotelRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.TourRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITourService;
+import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.TourHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +30,22 @@ public class TourService implements ITourService
     private final HotelRepository hotelRepository;
     private final CustomerRepository customerRepository;
     private final TourHelper tourHelper;
+    private final CustomerHelper customerHelper;
 
     @Autowired
     public TourService(TourRepository tourRepository,
                         FlyRepository flyRepository,
                         HotelRepository hotelRepository,
                         CustomerRepository customerRepository,
-                       TourHelper tourHelper)
+                       TourHelper tourHelper,
+                       CustomerHelper customerHelper)
     {
         this.tourRepository = tourRepository;
         this.flyRepository = flyRepository;
         this.hotelRepository = hotelRepository;
         this.customerRepository = customerRepository;
         this.tourHelper = tourHelper;
+        this.customerHelper = customerHelper;
     }
 
     @Override
@@ -117,7 +121,10 @@ public class TourService implements ITourService
                 .reservations(this.tourHelper.createReservations(hotels, customer))
                 .build();
 
+
         var tourPersisted = this.tourRepository.save(tourToPersist);
+
+        this.customerHelper.increase(customer.getDni(), TourService.class);
 
         return this.entityToResponse(tourPersisted);
     }

@@ -9,6 +9,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.HotelRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.ReservationRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IReservationService;
+import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.util.BestTravelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,18 +29,21 @@ public class ReservationService implements IReservationService
     private final ReservationRepository reservationRepository;
     private final CustomerRepository customerRepository;
     private final HotelRepository hotelRepository;
+    private final CustomerHelper customerHelper;
 
     public static final BigDecimal CHARGES_PRICE_PERCENTAGE = BigDecimal.valueOf(0.20);
 
 
     @Autowired
     public ReservationService(ReservationRepository reservationRepository,
-                               CustomerRepository customerRepository,
-                               HotelRepository hotelRepository)
+                              CustomerRepository customerRepository,
+                              HotelRepository hotelRepository,
+                              CustomerHelper customerHelper)
     {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.hotelRepository = hotelRepository;
+        this.customerHelper = customerHelper;
     }
 
     @Override
@@ -61,6 +65,8 @@ public class ReservationService implements IReservationService
                 .build();
 
         var reservationSaved = this.reservationRepository.save(reservationToSave);
+
+        this.customerHelper.increase(customer.getDni(), ReservationService.class);
 
         log.info("Reservation saved with id {}", reservationSaved.getId());
 
