@@ -3,6 +3,7 @@ package com.curso_modulos_spring.best_travel.api.controllers;
 import com.curso_modulos_spring.best_travel.api.models.requests.ReservationRequest;
 import com.curso_modulos_spring.best_travel.api.models.responses.ReservationResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IReservationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ReservationController
     }
 
     @PostMapping
-    public ResponseEntity<ReservationResponse> save(@RequestBody ReservationRequest request)
+    public ResponseEntity<ReservationResponse> save(@Valid @RequestBody ReservationRequest request)
     {
         return ResponseEntity.ok(this.reservationService.create(request));
     }
@@ -43,7 +44,7 @@ public class ReservationController
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<ReservationResponse> update(@PathVariable(name = "id") UUID idReservation, @RequestBody ReservationRequest request)
+    public ResponseEntity<ReservationResponse> update(@PathVariable(name = "id") UUID idReservation,@Valid @RequestBody ReservationRequest request)
     {
         return ResponseEntity.ok(this.reservationService.update(request, idReservation));
     }
