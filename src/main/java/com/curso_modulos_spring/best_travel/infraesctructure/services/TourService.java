@@ -10,6 +10,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.TourRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITourService;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.TourHelper;
+import com.curso_modulos_spring.best_travel.util.exceptions.IdNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class TourService implements ITourService
     @Override
     public void removeTicket(Long tourId, UUID ticketId)
     {
-        var tourFromDB = this.tourRepository.findById(tourId).orElseThrow();
+        var tourFromDB = this.tourRepository.findById(tourId).orElseThrow(()-> new IdNotFoundException("tour"));
 
         tourFromDB.removeTicket(ticketId);
 
@@ -61,8 +62,8 @@ public class TourService implements ITourService
     @Override
     public UUID addTicket(Long tourId, Long flyId)
     {
-        var tourFromDB = this.tourRepository.findById(tourId).orElseThrow();
-        var fly = this.flyRepository.findById(flyId).orElseThrow();
+        var tourFromDB = this.tourRepository.findById(tourId).orElseThrow(()-> new IdNotFoundException("tour"));
+        var fly = this.flyRepository.findById(flyId).orElseThrow(()-> new IdNotFoundException("fly"));
         var ticket = this.tourHelper.createTicket(fly, tourFromDB.getCustomer());
 
         tourFromDB.addTicket(ticket);
@@ -75,7 +76,7 @@ public class TourService implements ITourService
     @Override
     public void removeReservation(Long tourId, UUID reservationId)
     {
-        var tourFromDB = this.tourRepository.findById(tourId).orElseThrow();
+        var tourFromDB = this.tourRepository.findById(tourId).orElseThrow(()-> new IdNotFoundException("tour"));
 
         tourFromDB.removeReservation(reservationId);
 
@@ -85,8 +86,8 @@ public class TourService implements ITourService
     @Override
     public UUID addReservation(Long tourId, Long hotelId, Integer totalDays)
     {
-        var tourToUpdate = this.tourRepository.findById(tourId).orElseThrow();
-        var hotel = this.hotelRepository.findById(hotelId).orElseThrow();
+        var tourToUpdate = this.tourRepository.findById(tourId).orElseThrow(()-> new IdNotFoundException("tour"));
+        var hotel = this.hotelRepository.findById(hotelId).orElseThrow(()-> new IdNotFoundException("hotel"));
 
         var reservation = this.tourHelper.createReservation(hotel, tourToUpdate.getCustomer(), totalDays);
 
@@ -100,18 +101,18 @@ public class TourService implements ITourService
     @Override
     public TourResponse create(TourRequest request)
     {
-        var customer = this.customerRepository.findById(request.getCustomerId()).orElseThrow();
+        var customer = this.customerRepository.findById(request.getCustomerId()).orElseThrow(()-> new IdNotFoundException("customer"));
         var flights = new HashSet<FlyEntity>();
         var hotels = new HashMap<HotelEntity, Integer>();
 
         request.getFlights().forEach(tourFlyRequest->
         {
-            flights.add(this.flyRepository.findById(tourFlyRequest.getId()).orElseThrow());
+            flights.add(this.flyRepository.findById(tourFlyRequest.getId()).orElseThrow(()-> new IdNotFoundException("fly")));
         });
 
         request.getHotels().forEach(tourHotelRequest ->
         {
-            hotels.put(this.hotelRepository.findById(tourHotelRequest.getId()).orElseThrow(),
+            hotels.put(this.hotelRepository.findById(tourHotelRequest.getId()).orElseThrow(()-> new IdNotFoundException("hotel")),
                     tourHotelRequest.getTotalDays());
         });
 
@@ -132,7 +133,7 @@ public class TourService implements ITourService
     @Override
     public TourResponse read(Long tourId)
     {
-        var tour = this.tourRepository.findById(tourId).orElseThrow();
+        var tour = this.tourRepository.findById(tourId).orElseThrow(()-> new IdNotFoundException("tour"));
 
         return this.entityToResponse(tour);
     }
@@ -145,7 +146,7 @@ public class TourService implements ITourService
             La siguiente forma es como lo escribio el profe
          */
 
-        var tourToDelete = this.tourRepository.findById(tourId).orElseThrow();
+        var tourToDelete = this.tourRepository.findById(tourId).orElseThrow(()-> new IdNotFoundException("tour"));
         this.tourRepository.delete(tourToDelete);
     }
 
