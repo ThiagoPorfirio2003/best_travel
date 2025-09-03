@@ -8,6 +8,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.CustomerReposito
 import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.TicketRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITicketService;
+import com.curso_modulos_spring.best_travel.infraesctructure.helpers.BlackListHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.util.BestTravelUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class TicketService implements ITicketService
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
     private final CustomerHelper customerHelper;
+    private final BlackListHelper blackListHelper;
 
     public static final BigDecimal CHAGER_PRICE_PERCENTAGE = BigDecimal.valueOf(0.25);
 
@@ -36,17 +38,20 @@ public class TicketService implements ITicketService
     public TicketService(FlyRepository flyRepository,
                          CustomerRepository customerRepository,
                          TicketRepository ticketRepository,
-                         CustomerHelper customerHelper)
+                         CustomerHelper customerHelper,
+                         BlackListHelper blackListHelper)
     {
         this.flyRepository = flyRepository;
         this.customerRepository = customerRepository;
         this.ticketRepository = ticketRepository;
         this.customerHelper = customerHelper;
+        this.blackListHelper = blackListHelper;
     }
 
     @Override
     public TicketResponse create(TicketRequest request)
     {
+        this.blackListHelper.isInBlackListCustomer(request.getIdClient());
         //Estos 3 metodos deberian ser una simple validacion para saber si la entidad existe
         var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow();
         var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow();

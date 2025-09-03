@@ -8,6 +8,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.HotelRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.TourRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITourService;
+import com.curso_modulos_spring.best_travel.infraesctructure.helpers.BlackListHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.TourHelper;
 import com.curso_modulos_spring.best_travel.util.exceptions.IdNotFoundException;
@@ -32,6 +33,7 @@ public class TourService implements ITourService
     private final CustomerRepository customerRepository;
     private final TourHelper tourHelper;
     private final CustomerHelper customerHelper;
+    private final BlackListHelper blackListHelper;
 
     @Autowired
     public TourService(TourRepository tourRepository,
@@ -39,7 +41,8 @@ public class TourService implements ITourService
                         HotelRepository hotelRepository,
                         CustomerRepository customerRepository,
                        TourHelper tourHelper,
-                       CustomerHelper customerHelper)
+                       CustomerHelper customerHelper,
+                       BlackListHelper blackListHelper)
     {
         this.tourRepository = tourRepository;
         this.flyRepository = flyRepository;
@@ -47,6 +50,7 @@ public class TourService implements ITourService
         this.customerRepository = customerRepository;
         this.tourHelper = tourHelper;
         this.customerHelper = customerHelper;
+        this.blackListHelper = blackListHelper;
     }
 
     @Override
@@ -101,6 +105,7 @@ public class TourService implements ITourService
     @Override
     public TourResponse create(TourRequest request)
     {
+        this.blackListHelper.isInBlackListCustomer(request.getCustomerId());
         var customer = this.customerRepository.findById(request.getCustomerId()).orElseThrow(()-> new IdNotFoundException("customer"));
         var flights = new HashSet<FlyEntity>();
         var hotels = new HashMap<HotelEntity, Integer>();

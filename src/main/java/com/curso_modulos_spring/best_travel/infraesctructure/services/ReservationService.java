@@ -9,6 +9,7 @@ import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.HotelRepository;
 import com.curso_modulos_spring.best_travel.domain.repositories.ReservationRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IReservationService;
+import com.curso_modulos_spring.best_travel.infraesctructure.helpers.BlackListHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.util.BestTravelUtil;
 import com.curso_modulos_spring.best_travel.util.exceptions.IdNotFoundException;
@@ -31,6 +32,7 @@ public class ReservationService implements IReservationService
     private final CustomerRepository customerRepository;
     private final HotelRepository hotelRepository;
     private final CustomerHelper customerHelper;
+    private final BlackListHelper blackListHelper;
 
     public static final BigDecimal CHARGES_PRICE_PERCENTAGE = BigDecimal.valueOf(0.20);
 
@@ -39,17 +41,20 @@ public class ReservationService implements IReservationService
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerRepository customerRepository,
                               HotelRepository hotelRepository,
-                              CustomerHelper customerHelper)
+                              CustomerHelper customerHelper,
+                              BlackListHelper blackListHelper)
     {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.hotelRepository = hotelRepository;
         this.customerHelper = customerHelper;
+        this.blackListHelper = blackListHelper;
     }
 
     @Override
     public ReservationResponse create(ReservationRequest request)
     {
+        this.blackListHelper.isInBlackListCustomer(request.getIdClient());
         var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow(()-> new IdNotFoundException("customer"));
         var hotel = this.hotelRepository.findById(request.getIdHotel()).orElseThrow(()-> new IdNotFoundException("hotel"));
         var dateStart = BestTravelUtil.getRandomSoon().toLocalDate();

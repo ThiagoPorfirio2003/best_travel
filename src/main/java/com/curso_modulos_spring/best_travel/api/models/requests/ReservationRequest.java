@@ -22,6 +22,6 @@ public class ReservationRequest
     @Max(value = 30, message = "The value cannot be greater than 30")
     @NotNull(message = "The totalDays is mandatory")
     private Integer totalDays;
-    @Email
+    @Email(message = "Invalid email")
     private String email;
 }
