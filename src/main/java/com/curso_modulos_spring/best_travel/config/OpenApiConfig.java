@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Best Travel API",
-                version = "1.0",
+                version = "1.0.0",
                 description = "Documentation Best Traves's endpoints")
 )
 public class OpenApiConfig

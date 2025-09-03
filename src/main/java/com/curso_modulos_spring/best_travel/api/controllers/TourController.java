@@ -3,6 +3,8 @@ package com.curso_modulos_spring.best_travel.api.controllers;
 import com.curso_modulos_spring.best_travel.api.models.requests.TourRequest;
 import com.curso_modulos_spring.best_travel.api.models.responses.TourResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITourService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +27,21 @@ public class TourController
         this.tourService = tourService;
     }
 
+    @Operation(summary = "Guarda un tour en la DB")
     @PostMapping
     public ResponseEntity<TourResponse> create(@Valid @RequestBody TourRequest request)
     {
         return ResponseEntity.ok(this.tourService.create(request));
     }
 
+    @Operation(summary = "Retorna un tour con el ID recibido")
     @GetMapping(path = "/{tourId}")
     public ResponseEntity<TourResponse> read(@PathVariable Long tourId)
     {
         return ResponseEntity.ok(this.tourService.read(tourId));
     }
 
+    @Operation(summary = "Elimina el tour que coincide con el ID recibido")
     @DeleteMapping(path = "/{tourId}")
     public ResponseEntity<Void> delete(@PathVariable Long tourId)
     {
@@ -45,6 +50,7 @@ public class TourController
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Agrega un ticket a un tour")
     @PatchMapping(path = "/{tourId}/add_ticket/{flyId}")
     public ResponseEntity<Map<String, UUID>> addTicket(@PathVariable Long tourId,
                                                        @PathVariable Long flyId)
@@ -54,6 +60,7 @@ public class TourController
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Elimina un ticket de un tour")
     @PatchMapping(path = "/{tourId}/remove_ticket/{ticketId}")
     public ResponseEntity<Void> removeTicket(@PathVariable Long tourId,
                                              @PathVariable  UUID ticketId)
@@ -63,6 +70,7 @@ public class TourController
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Agrega una reservation a un tour")
     @PatchMapping(path = "/{tourId}/add_reservation/{hotelId}")
     public ResponseEntity<Map<String, UUID>> addReservation(@PathVariable Long tourId,
                                                        @PathVariable Long hotelId,
@@ -73,6 +81,7 @@ public class TourController
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Elimina una reservation a un tour")
     @PatchMapping(path = "/{tourId}/remove_reservation/{reservationId}")
     public ResponseEntity<Void> removeReservation(@PathVariable Long tourId,
                                                   @PathVariable UUID reservationId)
