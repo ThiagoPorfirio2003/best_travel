@@ -3,6 +3,7 @@ package com.curso_modulos_spring.best_travel.api.controllers;
 import com.curso_modulos_spring.best_travel.api.models.responses.FlyResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IFlyService;
 import com.curso_modulos_spring.best_travel.util.enums.SortType;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/fly")
+@Tag(name = "Fly")
 public class FlyController
 {
     private final IFlyService flyService;

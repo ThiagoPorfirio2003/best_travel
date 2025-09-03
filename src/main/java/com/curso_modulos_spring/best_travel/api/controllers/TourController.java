@@ -5,6 +5,7 @@ import com.curso_modulos_spring.best_travel.api.models.responses.TourResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITourService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/tour")
+@Tag(name = "Tour")
 public class TourController
 {
     private final ITourService tourService;

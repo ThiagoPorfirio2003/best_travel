@@ -3,6 +3,7 @@ package com.curso_modulos_spring.best_travel.api.controllers;
 import com.curso_modulos_spring.best_travel.api.models.requests.TicketRequest;
 import com.curso_modulos_spring.best_travel.api.models.responses.TicketResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.ITicketService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/ticket")
+@Tag(name = "Ticket")
 public class TicketController
 {
     private final ITicketService ticketService;

@@ -3,6 +3,7 @@ package com.curso_modulos_spring.best_travel.api.controllers;
 import com.curso_modulos_spring.best_travel.api.models.requests.ReservationRequest;
 import com.curso_modulos_spring.best_travel.api.models.responses.ReservationResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IReservationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/reservation")
+@Tag(name = "Reservation")
 public class ReservationController
 {
     private final IReservationService reservationService;
