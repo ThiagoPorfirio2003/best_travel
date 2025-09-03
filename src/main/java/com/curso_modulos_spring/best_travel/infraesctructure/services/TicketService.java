@@ -11,6 +11,8 @@ import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IT
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.BlackListHelper;
 import com.curso_modulos_spring.best_travel.infraesctructure.helpers.CustomerHelper;
 import com.curso_modulos_spring.best_travel.util.BestTravelUtil;
+import com.curso_modulos_spring.best_travel.util.enums.Tables;
+import com.curso_modulos_spring.best_travel.util.exceptions.IdNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,8 @@ public class TicketService implements ITicketService
     {
         this.blackListHelper.isInBlackListCustomer(request.getIdClient());
         //Estos 3 metodos deberian ser una simple validacion para saber si la entidad existe
-        var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow();
-        var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow();
+        var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow( ()-> new IdNotFoundException(Tables.fly.name()));
+        var customer = this.customerRepository.findById(request.getIdClient()).orElseThrow(()-> new IdNotFoundException(Tables.customer.name()));
 
         var ticketToPersist = TicketEntity.builder()
                 .id(UUID.randomUUID())
@@ -77,7 +79,7 @@ public class TicketService implements ITicketService
 
     @Override
     public TicketResponse read(UUID uuid) {
-        var ticketFromDB = this.ticketRepository.findById(uuid).orElseThrow();
+        var ticketFromDB = this.ticketRepository.findById(uuid).orElseThrow(()-> new IdNotFoundException(Tables.ticket.name()));
 
         log.info("Ticket read with id {}", ticketFromDB.getId());
 
@@ -87,12 +89,12 @@ public class TicketService implements ITicketService
     @Override
     public TicketResponse update(TicketRequest request, UUID uuid)
     {
-        var ticketToUpdate = this.ticketRepository.findById(uuid).orElseThrow();
+        var ticketToUpdate = this.ticketRepository.findById(uuid).orElseThrow(()-> new IdNotFoundException(Tables.ticket.name()));
         /*
             En realidad esto deberia obtener el fly haciendo ticketToUpdate.getFly(), pero deberia validar
             que no sea null
        */
-        var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow();
+        var fly = this.flyRepository.findById(request.getIdFly()).orElseThrow(()-> new IdNotFoundException(Tables.fly.name()));
 
         ticketToUpdate.setFly(fly);
         ticketToUpdate.setPrice(fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice()));
@@ -109,7 +111,7 @@ public class TicketService implements ITicketService
     @Override
     public void delete(UUID uuid)
     {
-        var ticketToDelete = this.ticketRepository.findById(uuid).orElseThrow();
+        var ticketToDelete = this.ticketRepository.findById(uuid).orElseThrow(()-> new IdNotFoundException(Tables.ticket.name()));
 
         this.ticketRepository.delete(ticketToDelete);
 
@@ -118,7 +120,7 @@ public class TicketService implements ITicketService
 
     @Override
     public BigDecimal findPrice(Long idFly) {
-        var fly = this.flyRepository.findById(idFly).orElseThrow();
+        var fly = this.flyRepository.findById(idFly).orElseThrow(()-> new IdNotFoundException(Tables.fly.name()));
 
         return fly.getPrice().multiply(TicketService.CHAGER_PRICE_PERCENTAGE).add(fly.getPrice());
     }

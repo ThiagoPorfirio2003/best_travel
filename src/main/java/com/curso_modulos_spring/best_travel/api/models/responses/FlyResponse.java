@@ -1,6 +1,6 @@
 package com.curso_modulos_spring.best_travel.api.models.responses;
 
-import com.curso_modulos_spring.best_travel.util.AeroLine;
+import com.curso_modulos_spring.best_travel.util.enums.AeroLine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

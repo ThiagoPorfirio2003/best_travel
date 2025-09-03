@@ -2,7 +2,7 @@ package com.curso_modulos_spring.best_travel.api.controllers;
 
 import com.curso_modulos_spring.best_travel.api.models.responses.FlyResponse;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IFlyService;
-import com.curso_modulos_spring.best_travel.util.SortType;
+import com.curso_modulos_spring.best_travel.util.enums.SortType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

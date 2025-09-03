@@ -4,7 +4,7 @@ import com.curso_modulos_spring.best_travel.api.models.responses.FlyResponse;
 import com.curso_modulos_spring.best_travel.domain.entities.FlyEntity;
 import com.curso_modulos_spring.best_travel.domain.repositories.FlyRepository;
 import com.curso_modulos_spring.best_travel.infraesctructure.abstractservices.IFlyService;
-import com.curso_modulos_spring.best_travel.util.SortType;
+import com.curso_modulos_spring.best_travel.util.enums.SortType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 

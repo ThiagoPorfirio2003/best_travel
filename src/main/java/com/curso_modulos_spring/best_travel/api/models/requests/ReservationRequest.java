@@ -18,6 +18,7 @@ public class ReservationRequest
     @Positive
     @NotNull(message = "The hotel ID is mandatory")
     private Long idHotel;
+    @Positive
     @Min(value = 1, message = "At least one day is required to make a reservation")
     @Max(value = 30, message = "The value cannot be greater than 30")
     @NotNull(message = "The totalDays is mandatory")
